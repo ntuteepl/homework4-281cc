@@ -33,7 +33,8 @@ void printSchedule(int s[], int d[], int n) {
         if (s[i] < currentEnd) {
             // 輸出新的司機時間表
             driverCount++;
-            printf(" %d %d\nDriver %d's schedule is %d %d", s[i], d[i], driverCount, s[i], d[i]);
+            printf(" %d %d", s[i], d[i]);
+            printf("\nDriver %d's schedule is %d %d", driverCount, s[i], d[i]);
             // 更新當前的返回時間
             currentEnd = d[i];
         } else {
@@ -48,8 +49,9 @@ int main() {
     int s[MAX_ORDERS];
     int d[MAX_ORDERS];
 
-    // 讀取輸入
+    // 輸入訂單數量和訂單資訊
     int n;
+    printf("請輸入訂單數量和每筆訂單的出發時間和返回時間：\n");
     scanf("%d", &n);
     for (int i = 0; i < n; i++) {
         scanf("%d %d", &s[i], &d[i]);
@@ -64,3 +66,4 @@ int main() {
 
     return 0;
 }
+

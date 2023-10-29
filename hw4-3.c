@@ -1,7 +1,5 @@
 #include <stdio.h>
 
-#define MAX_ORDERS 50
-
 // 檢查是否需要新的車輛
 int checkOverlap(int s[], int d[], int n) {
     int count = 1;
@@ -12,6 +10,7 @@ int checkOverlap(int s[], int d[], int n) {
         // 如果下一筆訂單的發車時間早於當前訂單的返回時間，則需要一輛新車
         if (s[i] < currentEnd) {
             count++;
+        } else {
             // 更新當前的返回時間
             currentEnd = d[i];
         }
@@ -33,12 +32,13 @@ void printSchedule(int s[], int d[], int n) {
         if (s[i] < currentEnd) {
             // 輸出新的司機時間表
             driverCount++;
-            printf(" %d %d", s[i], d[i]);
             printf("\nDriver %d's schedule is %d %d", driverCount, s[i], d[i]);
-            // 更新當前的返回時間
-            currentEnd = d[i];
         } else {
             printf(" %d %d", s[i], d[i]);
+        }
+        // 更新當前的返回時間
+        if (d[i] > currentEnd) {
+            currentEnd = d[i];
         }
     }
     printf("\n");
@@ -46,14 +46,13 @@ void printSchedule(int s[], int d[], int n) {
 
 int main() {
     // 初始化陣列
-    int s[MAX_ORDERS];
-    int d[MAX_ORDERS];
+    int s[3];
+    int d[3];
 
     // 輸入訂單數量和訂單資訊
-    int n;
-    printf("請輸入訂單數量和每筆訂單的出發時間和返回時間：\n");
-    scanf("%d", &n);
-    for (int i = 0; i < n; i++) {
+    int n = 3;
+    printf("請輸入每筆訂單的出發時間和返回時間：\n");
+    for (int i = 0; i < 3; i++) {
         scanf("%d %d", &s[i], &d[i]);
     }
 
@@ -66,4 +65,3 @@ int main() {
 
     return 0;
 }
-

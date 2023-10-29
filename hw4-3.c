@@ -28,13 +28,13 @@ void printSchedule(int s[], int d[], int n) {
 
     // 檢查每一筆訂單
     for (int i = 1; i < n; i++) {
-        // 如果下一筆訂單的發車時間早於當前訂單的返回時間，則需要一輛新車
-        if (s[i] < currentEnd) {
+        // 如果下一筆訂單的發車時間早於當前訂單的返回時間，則可以再次出發
+        if (s[i] > currentEnd) {
+            printf("%d %d", s[i], d[i]);
+        } else {
             // 輸出新的司機時間表
             driverCount++;
             printf("\nDriver %d's schedule is %d %d", driverCount, s[i], d[i]);
-        } else {
-            printf(" %d %d", s[i], d[i]);
         }
         // 更新當前的返回時間
         if (d[i] > currentEnd) {

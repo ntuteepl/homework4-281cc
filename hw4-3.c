@@ -1,67 +1,75 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-// 檢查是否需要新的車輛
-int checkOverlap(int s[], int d[], int n) {
-    int count = 1;
-    int currentEnd = d[0];  // 第一筆訂單的返回時間
+int main()
+{
+    int n=0,car,end,temp,j=0;
+    int s[24]={0},d[24]={0};
+    while(scanf("%d%d",&s[n],&d[n])!=EOF)
+    {
+       n++;
+    }
+    int ssch[10][20]={0};//每班車的s
+    int dsch[10][20]={0};//每班車的d
 
-    // 檢查每一筆訂單
-    for (int i = 1; i < n; i++) {
-        // 如果下一筆訂單的發車時間早於當前訂單的返回時間，則需要一輛新車
-        if (s[i] < currentEnd) {
-            count++;
-        } else {
-            // 更新當前的返回時間
-            currentEnd = d[i];
+
+    for(int i=0;i<n;i++)//排序
+    {
+        for(int j=i;j<n;j++)
+        {
+         if(s[i]>s[j])
+         {
+          temp=s[j];
+          s[j]=s[i];
+          s[i]=temp;
+          temp=d[j];
+          d[j]=d[i];
+          d[i]=temp;
+         }
         }
     }
-    return count;
-}
 
-// 將車輛時間表輸出
-void printSchedule(int s[], int d[], int n) {
-    int currentEnd = d[0];  // 第一筆訂單的返回時間
-    int driverCount = 1;
 
-    // 輸出第一位司機的時間表
-    printf("Driver %d's schedule is %d %d", driverCount, s[0], d[0]);
 
-    // 檢查每一筆訂單
-    for (int i = 1; i < n; i++) {
-        // 如果下一筆訂單的發車時間早於當前訂單的返回時間，則可以再次出發
-        if (s[i] > currentEnd) {
-            printf("%d %d", s[i], d[i]);
-        } else {
-            // 輸出新的司機時間表
-            driverCount++;
-            printf("\nDriver %d's schedule is %d %d", driverCount, s[i], d[i]);
-        }
-        // 更新當前的返回時間
-        if (d[i] > currentEnd) {
-            currentEnd = d[i];
+    end=0;//上一班車的抵達時間
+
+    for(int i=0;i<n;i++)//i為車班，到時候去找ssch[]哪個是0就知道有幾班車了
+    {
+          for(int k=0;k<n;k++)
+          {
+              if(s[k]>=end && s[k]!=0)//如果發車時間大於上次抵達時間就記錄進時間表內
+              {
+                  end=d[k];
+                  ssch[i][j]=s[k];
+                  dsch[i][j]=d[k];
+                  s[k]=0;
+                  d[k]=0;
+                  j++;
+              }
+          }
+        j=0;
+        end=0;
+    }
+    for(int c=0;c<=n;c++)
+    {
+        if(ssch[c][0]==0)
+        {
+            car=c;
+            printf("%d\n",car);
+            break;
         }
     }
-    printf("\n");
-}
 
-int main() {
-    // 初始化陣列
-    int s[3];
-    int d[3];
+    for(int driver = 0; driver < car; driver++){ // 輸出每個駕駛的行程
+        printf("\nDriver %d's schedule is", driver+1 );
+        for(int f = 0; f < n; f++)
+        {
+            if(ssch[driver][f]!=0)
+            {
+                printf(" %d %d",ssch[driver][f],dsch[driver][f]);
+            }
+            else break;
+        }
 
-    // 輸入訂單數量和訂單資訊
-    int n = 3;
-    printf("請輸入每筆訂單的出發時間和返回時間：\n");
-    for (int i = 0; i < 3; i++) {
-        scanf("%d %d", &s[i], &d[i]);
     }
-
-    // 呼叫函式計算車輛需求
-    int result = checkOverlap(s, d, n);
-    printf("%d\n", result);
-
-    // 印出每位司機的時間表
-    printSchedule(s, d, n);
-
-    return 0;
 }
